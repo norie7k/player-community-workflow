@@ -101,12 +101,17 @@ pip install -r requirements.txt
 
 - 完整跑完约 8000+ 条、42 批，耗时长且消耗 API 额度，建议先用小时间窗口试跑。
 - 若出现 `白名单更新出错：'话题簇名称'`，多为模型输出字段与预期不一致，分类结果仍会写入 Excel，可检查模型#4 输出格式。
-- 本包 **不包含** 其他 Notebook（如 `qun1.ipynb`、`main.ipynb`）及 `peter发言/`、`test/`、`数据修复/` 等子目录。
+- 本包 **不包含** 其他 Notebook（如 `qun1.ipynb`、`main.ipynb`）及 `peter发言/`、`test/` 等子目录。
 
-## 与本目录外文件的关系
+## 下游：分析后数据修复（人工处理）
 
-以下文件被 `qun2_main.ipynb` 引用但不在原研发侧目录内，已从运营侧社群数据目录补充：
+`qun2_main` 输出的 Excel 需经四步后处理，脚本在仓库 `data_repair/` 目录：
 
-- `mapping地球2.xlsx` — 客服 QQ 昵称与真实客服名的映射
+| 顺序 | 脚本 | 作用 |
+|------|------|------|
+| ① | `none_update.py` | 对照群 txt 补齐空单元格 |
+| ② | `jiyouhua.py` | 修正「极」字污染字段 |
+| ③ | `merge.py` | 单文件话题簇列合并 |
+| ④ | `excelmerg.py` | 多批次 Excel 最终汇总 |
 
-其余脚本与提示词均来自 `玩家发言分类（供研发侧）` 根目录。
+详见仓库根目录 [data_repair/README.md](../data_repair/README.md)
